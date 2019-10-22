@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            width: 80%;
+            margin: auto;
+        }
+
+        .img {
+            height: 40px;
+            position: rela;
+        }
+
+        .container {
+
+            margin: auto;
+        }
+
+        form {
+            width: 100%;
+        }
+
+        .jumbotron {
+            background-color: purple;
+            width: 100%;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="jumbotron jumbotron-fluid" style="background-color: purple; color: white;">
+        <div class="container">
+            <h1 class="display-4"> New York
+                Times Search</h1>
+
+        </div>
+    </div>
+    <form id="form">
+        <div>
+            <h3>
+                Search Peramatars
+            </h3>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Search Term:</label>
+            <input type="text" class="form-control" id="termSearch">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Number of Records to Retrive:</label>
+            <select class="form-control" id="numOfArticles">
+                <option id="display1">1</option>
+                <option id="display5" selected="selected"> 5</option>
+                <option id="display10">10</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Start Year(Optional):</label>
+            <input type="text" class="form-control" id="startYear">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">End Year (Optional):</label>
+            <input type="text" class="form-control" id="endYear">
+        </div>
+        <div>
+            <ion-icon name="search"></ion-icon>
+            <input type="submit" id="search" value="Search">
+            <button type="button" class="btn btn-info" id="clearSearch">Clear Search</button>
+        </div>
+    </form>
+    <br>
+    <form>
+        <div class="container">
+            <h3>Top Articles</h3>
+
+        </div>
+        <div class="card-body" id="article-section">
+        </div>
+    </form>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var submitBtn = $("#search");
+        submitBtn.on("click", function (event) {
+            event.preventDefault()
+            var termSearchInput = $('#termSearch').val().trim();
+            var numOfArticlesInput = $("#numOfArticles").val();
+            var startYearInput = $("#startYear").val() + '0101';
+            var endYearInput = $("#endYear").val() + '1231';
+            console.log("submitted")
+            console.log(termSearchInput);
+            console.log(numOfArticlesInput);
+            console.log(startYearInput);
+            console.log(endYearInput);
+
+            var queryURL = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + termSearchInput + '&begin_date=' + startYearInput + '&end_date=' + endYearInput + '&api-key=Ed2PaLrBd40eltZIAJuwvfwCpPIVzZC4';
+
+
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function (result) {
+                console.log(result.response.docs);
+
+
+                $('#article-section').text(JSON.stringify(result.response.docs));
+
+                for (var i = 0; i < numOfArticlesInput; i++) {
+                    console.log[i]
+                }
+            });
+
+
+
+
+            var clearSearchBtn = $("#clearSearch");
+            clearSearchBtn.on("click", function () {
+                $('#form').trigger("reset");
+
+            }
+            );
+
+
+            // var article = $(termSearchInput').val(); //
+            //var beginDate = 20120101 // $('#articleInput').val() + '0101' ; //
+            // var endDate = 20131231 // $('#articleInput').val() + '1231'; 
+
+
+        });
+    </script>
+</body>
+
+</html>
